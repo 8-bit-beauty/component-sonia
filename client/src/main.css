@@ -1,8 +1,15 @@
-:local(.container) {
-    margin: 20px;
+:local(.title) {
     color: rgb(51, 51, 51);
-    /* de 38  102 185 */
     font-family: "Amazon Ember", Arial, sans-serif;
+   
+}
+:local(.main){
+    
+    overflow: hidden;
+    position: absolute;
+   
+   right: 0%;
+   left:3%;
 }
 
 :local(.text) {
@@ -22,6 +29,8 @@
 
 :local(.review) {
     color: #0066c0;
+    font-family: "Amazon Ember", Arial, sans-serif;
+    font-size: 13px;
 }
 
 :local(.review:hover) {
@@ -31,6 +40,9 @@
 
 :local(.price) {
     color: #B12704 !important;
+    font-family: "Amazon Ember", Arial, sans-serif;
+    font-size: 13px;
+
 }
 
 :local(.price:hover) {
@@ -53,12 +65,70 @@
 
 
 :local(.menu) {
-    display: table;
-    float: left;
-    margin: 1%;
+    display: inline-block;
+    margin: 2%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    
 }
 
+/* 
 :local(.menu>div) {
     display: table-row;
 
+} */
+
+:local(button) {
+    text-decoration: none;
+    display: block;
+    padding: 15px;
+    border-radius: 2px;
+    border:1px solid rgb(168,171, 176);
+    line-height: 0;
+    height: 5vh;
+    width: 3vw;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .6) inset;
+    background-color: rgb(241, 243, 245);
+    text-align: center;
+    box-sizing: border-box;
+    margin: 0;
+    font-size: 27px;
+    letter-spacing: -4px;
+    display: block;
+    list-style-type: decimal;
+
 }
+
+:local(button:hover) {
+
+    background-color: #e7e9ec;
+    cursor: pointer;
+}
+:local(.previous){
+    position: absolute;
+    top: calc(23% ); 
+    z-index: 1;
+    height: 36px;
+    width: 36px;
+    left: 1%
+    
+    
+}
+:local(.next){
+    position: absolute;
+    top: calc(23% );
+    z-index: 1;
+    height: 36px;
+    width: 36px;
+    float: right;
+    right: 1%
+}
+:local(.page){
+    float:right;
+    font-family: "Amazon Ember", Arial, sans-serif;
+    font-size: 13px!important;
+    line-height: 19px!important;
+}
+
+
