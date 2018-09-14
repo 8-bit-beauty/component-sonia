@@ -1,11 +1,11 @@
 const mysql = require('mysql');
 const faker = require('faker');
 
-
+// tried using process.env.PASSWORD but made database unreachable
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'password',
+  password: 'password', // process.env.PASSWORD
   database: 'slideShowData',
 });
 

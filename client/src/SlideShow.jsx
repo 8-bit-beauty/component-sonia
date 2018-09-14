@@ -15,17 +15,16 @@ class RelatedItems extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:4043/products')
+    fetch('/products')
       .then(response => response.json())
       .then(({ data }) => {
         const arr = [];
         let numOfItem = 6;
         if (data.length < 6) { numOfItem = data.length; }
-        for (let i = 0; i < numOfItem; i++) {
+        for (let i = 0; i < numOfItem; i += 1) {
           arr.push(data[i]);
         }
 
-        console.log('data is : ', data);
         this.setState({
           products: data,
           pageProducts: arr,
@@ -47,8 +46,7 @@ class RelatedItems extends Component {
       numOfItem = total % numOfItem;
     }
     const arr = [];
-    for (let i = startNum; i < startNum + numOfItem; i++) {
-      
+    for (let i = startNum; i < startNum + numOfItem; i += 1) {
       arr.push(this.state.products[i]);
     }
     this.setState({
@@ -58,12 +56,13 @@ class RelatedItems extends Component {
   }
 
   pageClickP() {
-    const total = this.state.products.length;
-
+    const { products } = this.state;
+    let { pageNum } = this.state;
+    const total = products.length;
     let numOfItem = 6;
-    let pageNum = this.state.pageNum - 1;
+    pageNum -= 1;
     if (pageNum < 0) {
-      pageNum = Math.floor(this.state.products.length / numOfItem);
+      pageNum = Math.floor(products.length / numOfItem);
     }
     let startNum = pageNum * 6;
 
@@ -75,8 +74,8 @@ class RelatedItems extends Component {
       numOfItem = total % numOfItem;
     }
     const arr = [];
-    for (let i = startNum; i < startNum + numOfItem; i++) {
-      arr.push(this.state.products[i]);
+    for (let i = startNum; i < startNum + numOfItem; i += 1) {
+      arr.push(products[i]);
     }
     this.setState({
       pageProducts: arr,
@@ -88,15 +87,9 @@ class RelatedItems extends Component {
   render() {
     return (
       <div>
-        <span className={styles.page}>
-        Page
-          {' '}
-          {this.state.pageNum + 1}
-          {' '}
-of
-          {' '}
+        <span className={styles.page}>{`Page `}{this.state.pageNum + 1}{` of `}
           {(this.state.products.length - this.state.products.length % 6) / 6 + 1}
-                </span>
+        </span>
         <button type="submit" className={styles.previous} onClick={() => { this.pageClickP(); }}>&#8249;</button>
         <PzSlider items={this.state.pageProducts} />
         <button type="submit" className={styles.next} onClick={() => { this.pageClickN(); }}>&#8250;</button>

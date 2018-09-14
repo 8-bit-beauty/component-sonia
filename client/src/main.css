@@ -73,12 +73,6 @@
     
 }
 
-/* 
-:local(.menu>div) {
-    display: table-row;
-
-} */
-
 :local(button) {
     text-decoration: none;
     display: block;
