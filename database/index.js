@@ -17,15 +17,23 @@ connection.connect((err) => {
   }
 });
 
-const DATA_NUMBER = 100;
+// function picks a random image from S3
+const randomImage = () => {
+  const imageList = ['https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(1).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(10).jpeg',
+    'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(2).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(3).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(4).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(5).jpeg',
+    'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(6).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(7).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(8).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(9).jpeg'];
+  const item = imageList[Math.floor(Math.random() * imageList.length)];
+  return item;
+};
 
+const DATA_NUMBER = 100;
 const createTable = function () {
   for (let i = 0; i < DATA_NUMBER; i++) {
     const randomName = faker.commerce.productName();
     const randomDescription = faker.lorem.sentences();
     const randomColor = faker.commerce.color();
     const randomPrice = faker.commerce.price();
-    const randomImageURL = faker.random.image();
+    const randomImageURL = randomImage();
     const randomRating = Math.floor((Math.random() * 5) + 1);
     const randomReviewNumber = Math.floor((Math.random() * 1000) + 36);
     const randomBoolean = faker.random.boolean();
@@ -38,12 +46,12 @@ const createTable = function () {
 // preventing the funtion from running more than once
 // createTable();
 
-const getRelatedItems = function () {
+const getRelatedItems = () => {
   for (let i = 1; i <= 100; i++) {
-    const relatedItems = ((Math.random() * 38) + 6)
+    const relatedItems = ((Math.random() * 38) + 6);
     for (let j = 0; j < relatedItems; j++) {
       const relatedTo = ((Math.random() * 100) + 1);
-      connection.query(`INSERT INTO similarProducts (productId, relatedItemId) values (${i}, ${relatedTo})`)
+      connection.query(`INSERT INTO similarProducts (productId, relatedItemId) values (${i}, ${relatedTo})`);
     }
   }
 };
