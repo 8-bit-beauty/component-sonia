@@ -22,10 +22,8 @@ app.get('/carousel', (req, res) => {
   });
 });
 
-// for testing purposes
-
 app.get('/products', (req, res) => {
-  controllers.getTen((err, results) => {
+  controllers.getRelated((err, results) => {
     if (err) {
       res.status(503).send(err);
     } else {
