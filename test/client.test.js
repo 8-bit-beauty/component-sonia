@@ -50,7 +50,7 @@ describe('PzSlider', () => {
     expect(wrapper.prop('item')).toEqual('{this.state.pageProducts}');
   });
 
-  // testing the event handlers
+  // testing event handlers
 
   test('pass a selected value to the onClick handler', () => {
     const value = '2';
@@ -67,4 +67,6 @@ describe('PzSlider', () => {
 
     expect(onClick).toBeCalledWith(value);
   });
+
+  
 

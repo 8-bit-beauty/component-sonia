@@ -21,7 +21,6 @@ const DATA_NUMBER = 100;
 
 const createTable = function () {
   for (let i = 0; i < DATA_NUMBER; i++) {
-    // var randomProductId = faker.random.number();
     const randomName = faker.commerce.productName();
     const randomDescription = faker.lorem.sentences();
     const randomColor = faker.commerce.color();
@@ -36,33 +35,27 @@ const createTable = function () {
     connection.query(queryString);
   }
 };
-
+// preventing the funtion from running more than once
 // createTable();
 
 const getRelatedItems = function () {
-  const randoms = [];
   for (let i = 1; i <= 100; i++) {
     const relatedItems = ((Math.random() * 38) + 6)
     for (let j = 0; j < relatedItems; j++) {
       const relatedTo = ((Math.random() * 100) + 1);
-      randoms.push([j, relatedTo]);
+      connection.query(`INSERT INTO similarProducts (productId, relatedItemId) values (${i}, ${relatedTo})`)
     }
   }
-  return randoms;
-  connection.query('INSERT INTO relatedItems VALUES ?', [randoms], (error) => {
-    if (error) {
-      console.log('ERROR inserting data into relatedItems', error);
-    } else {
-      console.log('SUCCESS inserting data into relatedItems');
-    }
-  });
 };
 
+// preventing the funtion from running more than once
+// getRelatedItems();
 
+// chose a random id
+const id = 15;
 
-
-const getAllData = function (callback) {
-  queryString = 'SELECT * FROM products';
+const getRelated = (callback) => {
+  const queryString = `select * from products where id in (select relatedItemId from similarProducts where productId=${id})`;
   connection.query(queryString, (err, data) => {
     if (err) {
       callback(err);
@@ -72,19 +65,5 @@ const getAllData = function (callback) {
   });
 };
 
-
-const getRelated = function (callback) {
-  queryString = 'SELECT * FROM similarProducts WHERE productId=relatedItemId';
-  connection.query(queryString, (err, data) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, data);
-    }
-  });
-};
-
-
-module.exports.getAllData = getAllData;
 module.exports.getRelated = getRelated;
 module.exports.getRelatedItems = getRelatedItems;

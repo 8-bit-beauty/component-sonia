@@ -12,22 +12,16 @@ class RelatedItems extends Component {
       pageNum: 0,
       pageProducts: [],
     };
-    this.getProducts = this.getProducts.bind(this);
   }
 
   componentDidMount() {
-    this.getProducts();
-  }
-
-
-  getProducts() {
     fetch('http://localhost:4043/products')
       .then(response => response.json())
       .then(({ data }) => {
         const arr = [];
-        let noI = 6;
-        if (data.length < 6) { noI = data.length; }
-        for (let i = 0; i < noI; i++) {
+        let numOfItem = 6;
+        if (data.length < 6) { numOfItem = data.length; }
+        for (let i = 0; i < numOfItem; i++) {
           arr.push(data[i]);
         }
 
@@ -42,18 +36,18 @@ class RelatedItems extends Component {
 
   pageClickN() {
     const total = this.state.products.length;
-    let noI = 6;
+    let numOfItem = 6;
     let pageNum = this.state.pageNum + 1;
     let startNum = pageNum * 6;
 
     if (startNum > total) {
       pageNum = 0;
       startNum = 0;
-    } else if (startNum + noI > total) {
-      noI = total % noI;
+    } else if (startNum + numOfItem > total) {
+      numOfItem = total % numOfItem;
     }
     const arr = [];
-    for (let i = startNum; i < startNum + noI; i++) {
+    for (let i = startNum; i < startNum + numOfItem; i++) {
       
       arr.push(this.state.products[i]);
     }
@@ -66,10 +60,10 @@ class RelatedItems extends Component {
   pageClickP() {
     const total = this.state.products.length;
 
-    let noI = 6;
+    let numOfItem = 6;
     let pageNum = this.state.pageNum - 1;
     if (pageNum < 0) {
-      pageNum = Math.floor(this.state.products.length / noI);
+      pageNum = Math.floor(this.state.products.length / numOfItem);
     }
     let startNum = pageNum * 6;
 
@@ -77,11 +71,11 @@ class RelatedItems extends Component {
       pageNum = 0;
       startNum = 0;
       // endNum = 5;
-    } else if (startNum + noI > total) {
-      noI = total % noI;
+    } else if (startNum + numOfItem > total) {
+      numOfItem = total % numOfItem;
     }
     const arr = [];
-    for (let i = startNum; i < startNum + noI; i++) {
+    for (let i = startNum; i < startNum + numOfItem; i++) {
       arr.push(this.state.products[i]);
     }
     this.setState({

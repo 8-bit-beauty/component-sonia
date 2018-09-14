@@ -12,15 +12,15 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/carousel', (req, res) => {
-  controllers.getAllData((err, data) => {
-    if (err) {
-      res.status(503).send(err);
-    } else {
-      res.send(data);
-    }
-  });
-});
+// app.get('/carousel', (req, res) => {
+//   controllers.getAllData((err, data) => {
+//     if (err) {
+//       res.status(503).send(err);
+//     } else {
+//       res.send(data);
+//     }
+//   });
+// });
 
 app.get('/products', (req, res) => {
   controllers.getRelated((err, results) => {
