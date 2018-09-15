@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-
+import fetch from 'node-fetch';
 import PzSlider from './PzSlider.jsx';
 import styles from './main.css';
+
 // import React from 'react';
 
 class RelatedItems extends Component {
@@ -15,7 +16,7 @@ class RelatedItems extends Component {
   }
 
   componentDidMount() {
-    fetch('/products')
+    fetch('http://localhost:4043/products')
       .then(response => response.json())
       .then(({ data }) => {
         const arr = [];

@@ -7,10 +7,10 @@ const PzSlider = (props) => {
     <div>
 
       <h3 className={styles.title}>Customers who bought this item also bought</h3>
-      <div  className={styles.main}>
-        {props.items.map((elem, index) => (
+      <div className={styles.main}>
+        {props.items.map(elem => (
         <div className={styles.menu}>
-          <PzElement key={index} element={elem} />
+          <PzElement element={elem} />
         </div>
         ))}
       </div>

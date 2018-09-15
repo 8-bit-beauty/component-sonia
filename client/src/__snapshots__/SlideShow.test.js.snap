@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RelatedItems pass a selected value to the onClick handler 1`] = `
+<button
+  onClick={[MockFunction]}
+  type="submit"
+/>
+`;
+
+exports[`RelatedItems renders PzSlider component 1`] = `
+<div>
+  <span
+    className="page"
+  >
+    Page 
+    1
+     of 
+    1
+  </span>
+  <button
+    className="previous"
+    onClick={[Function]}
+    type="submit"
+  >
+    ‹
+  </button>
+  <PzSlider
+    items={Array []}
+  />
+  <button
+    className="next"
+    onClick={[Function]}
+    type="submit"
+  >
+    ›
+  </button>
+</div>
+`;
+
+exports[`RelatedItems should render correctly in "debug" mode 1`] = `
+<div>
+  <span
+    className="page"
+  >
+    Page 
+    1
+     of 
+    1
+  </span>
+  <button
+    className="previous"
+    onClick={[Function]}
+    type="submit"
+  >
+    ‹
+  </button>
+  <PzSlider
+    items={Array []}
+  />
+  <button
+    className="next"
+    onClick={[Function]}
+    type="submit"
+  >
+    ›
+  </button>
+</div>
+`;
+
+exports[`RelatedItems should render correctly with no props 1`] = `
+<div>
+  <span
+    className="page"
+  >
+    Page 
+    1
+     of 
+    1
+  </span>
+  <button
+    className="previous"
+    onClick={[Function]}
+    type="submit"
+  >
+    ‹
+  </button>
+  <PzSlider
+    items={Array []}
+  />
+  <button
+    className="next"
+    onClick={[Function]}
+    type="submit"
+  >
+    ›
+  </button>
+</div>
+`;
