@@ -1,68 +1,77 @@
-let mysql = require('mysql');
-var faker = require('faker');
+const mysql = require('mysql');
+const faker = require('faker');
 
-
-let connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'slideShowData'
+// tried using process.env.PASSWORD but made database unreachable
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'password', // process.env.PASSWORD
+  database: 'slideShowData',
 });
 
-connection.connect(function (err) {
-    if (err) {
-        console.log(err)
-    } else {
-        console.log('DB connected!')
-    }
+connection.connect((err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('DB connected!');
+  }
 });
+
+// function picks a random image from S3
+const randomImage = () => {
+  const imageList = ['https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(1).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(10).jpeg',
+    'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(2).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(3).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(4).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(5).jpeg',
+    'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(6).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(7).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(8).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(9).jpeg'];
+  const item = imageList[Math.floor(Math.random() * imageList.length)];
+  return item;
+};
 
 const DATA_NUMBER = 100;
 const createTable = function () {
+  for (let i = 0; i < DATA_NUMBER; i++) {
+    const randomName = faker.commerce.productName();
+    const randomDescription = faker.lorem.sentences();
+    const randomColor = faker.commerce.color();
+    const randomPrice = faker.commerce.price();
+    const randomImageURL = randomImage();
+    const randomRating = Math.floor((Math.random() * 5) + 1);
+    const randomReviewNumber = Math.floor((Math.random() * 1000) + 36);
+    const randomBoolean = faker.random.boolean();
 
-    for (var i = 0; i < DATA_NUMBER; i++) {
-
-        var randomProductId = faker.random.number();
-        var randomName = faker.commerce.productName();
-        var randomDescription = faker.lorem.sentences();
-        var randomColor = faker.commerce.color();
-        var randomPrice = faker.commerce.price();
-        var randomImageURL = faker.random.image();
-
-        let queryString = `INSERT INTO products (productId, productName, productDescription, color, price, imageURL) \
-                            VALUES (${randomProductId}, "${randomName}", "${randomDescription}", "${randomColor}", "${randomPrice}", "${randomImageURL}")`
-        connection.query(queryString);
-    }
-}
-
-
+    const queryString = `INSERT INTO products (productName, productDescription, color, price, imageURL, rating, reviewNumber, isPrime)
+                            VALUES ("${randomName}", "${randomDescription}", "${randomColor}", "${randomPrice}", "${randomImageURL}", ${randomRating}, ${randomReviewNumber}, ${randomBoolean})`;
+    connection.query(queryString);
+  }
+};
+// preventing the funtion from running more than once
 // createTable();
 
-const getAllData = function (callback) {
-    queryString = 'SELECT * FROM products';
-    connection.query(queryString, function (err, data) {
-        if (err) {
-            callback(err);
-        } else {
-            callback(null, data)
-        }
-    })
-}
+const getRelatedItems = () => {
+  for (let i = 1; i <= 100; i++) {
+    const relatedItems = ((Math.random() * 38) + 6);
+    for (let j = 0; j < relatedItems; j++) {
+      const relatedTo = ((Math.random() * 100) + 1);
+      connection.query(`INSERT INTO similarProducts (productId, relatedItemId) values (${i}, ${relatedTo})`);
+    }
+  }
+};
 
-// temporary function for testing purposes
+// preventing the funtion from running more than once
+// getRelatedItems();
 
-const getTen = function (callback) {
-    queryString = 'SELECT * FROM products LIMIT 10';
-    connection.query(queryString, function (err, data) {
-        if (err) {
-            callback(err);
-        } else {
-            callback(null, data)
-        }
-    })
-}
+// chose a random id
+const id = 15;
 
+const getRelated = (callback) => {
+  const queryString = `select * from products where id in (select relatedItemId from similarProducts where productId=${id})`;
+  connection.query(queryString, (err, data) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, data);
+    }
+  });
+};
 
-
-module.exports.getAllData = getAllData;
-module.exports.getTen = getTen;
+module.exports.getRelated = getRelated;
+module.exports.getRelatedItems = getRelatedItems;
