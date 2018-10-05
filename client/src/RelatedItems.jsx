@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import fetch from 'node-fetch';
-import PzSlider from './PzSlider.jsx';
-import styles from './main.css';
+import React, { Component } from "react";
+import fetch from "node-fetch";
+import PzSlider from "./PzSlider.jsx";
+import styles from "./main.css";
 
 class RelatedItems extends Component {
   constructor(props) {
@@ -9,30 +9,33 @@ class RelatedItems extends Component {
     this.state = {
       products: [],
       pageNum: 0,
-      pageProducts: [],
+      pageProducts: []
     };
   }
 
   componentDidMount() {
-    const id = window.location.search.replace(/\?id=/, '');
-    if (id) {
-      fetch(`/product?id=${id}`)
-        .then(response => response.json())
-        .then(({ data }) => {
-          const listOfItems = [];
-          let numOfItem = 6;
-          if (data.length < 6) { numOfItem = data.length; }
-          for (let i = 0; i < numOfItem; i += 1) {
-            listOfItems.push(data[i]);
-          }
-
-          this.setState({
-            products: data,
-            pageProducts: listOfItems,
-          });
-        })
-        .catch(err => console.log(err));
-    }
+    const id = window.location.search.replace(/\?id=/, "");
+    // if (id) {
+    fetch(`/product${location.pathname}`)
+      .then(response => response.text())
+      .then(data => {
+        data = JSON.parse(data);
+        const listOfItems = [];
+        let numOfItem = 6;
+        if (data.length < 6) {
+          numOfItem = data.length;
+        }
+        for (let i = 0; i < numOfItem; i += 1) {
+          listOfItems.push(data[i]);
+        }
+        this.setState({
+          // products: [...this.state.products, data],
+          products: data,
+          pageProducts: listOfItems
+        });
+      })
+      .catch(err => console.log(err));
+    // }
   }
 
   pageClickN() {
@@ -55,7 +58,7 @@ class RelatedItems extends Component {
     }
     this.setState({
       pageProducts: listOfItems,
-      pageNum,
+      pageNum
     });
   }
 
@@ -82,23 +85,30 @@ class RelatedItems extends Component {
     }
     this.setState({
       pageProducts: listOfItems,
-      pageNum,
+      pageNum
     });
   }
-
 
   render() {
     const { products, pageProducts, pageNum } = this.state;
     return (
       <div>
         <span className={styles.page}>
-          {'Page '}
+          {"Page "}
           {pageNum + 1}
-          {' of '}
+          {" of "}
           {(products.length - (products.length % 6)) / 6 + 1}
         </span>
         <div>
-          {products.length > 0 ? <PzSlider  prev={this.pageClickP.bind(this)} next={this.pageClickN.bind(this)} items={pageProducts} /> : 'Loading...'}
+          {products.length > 0 ? (
+            <PzSlider
+              prev={this.pageClickP.bind(this)}
+              next={this.pageClickN.bind(this)}
+              items={pageProducts}
+            />
+          ) : (
+            "Loading..."
+          )}
         </div>
       </div>
     );
