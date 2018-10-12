@@ -1,26 +1,35 @@
-const faker = require('faker');
-const mysql = require('mysql');
+const faker = require("faker");
+const mysql = require("mysql");
 
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.PASSWORD,
-  database: 'slideShowData',
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.PASSWORD || null,
+  database: "slideShowData"
 });
 
-connection.connect((err) => {
+connection.connect(err => {
   if (err) {
     console.log(err);
   } else {
-    console.log('DB connected!(Seed)');
+    console.log("DB connected!(Seed)");
   }
 });
 
 // function picks a random image from S3
 const randomImage = () => {
-  const imageList = ['https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(1).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(10).jpeg',
-    'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(2).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(3).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(4).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(5).jpeg',
-    'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(6).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(7).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(8).jpeg', 'https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(9).jpeg'];
+  const imageList = [
+    "https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(1).jpeg",
+    "https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(10).jpeg",
+    "https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(2).jpeg",
+    "https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(3).jpeg",
+    "https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(4).jpeg",
+    "https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(5).jpeg",
+    "https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(6).jpeg",
+    "https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(7).jpeg",
+    "https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(8).jpeg",
+    "https://s3-us-west-1.amazonaws.com/pictures-hrsf/download+(9).jpeg"
+  ];
   const item = imageList[Math.floor(Math.random() * imageList.length)];
   return item;
 };
@@ -31,7 +40,7 @@ function getRandomRating() {
 }
 
 const DATA_NUMBER = 100;
-const createTable = function () {
+const createTable = function() {
   for (let i = 0; i < DATA_NUMBER; i += 1) {
     const randomName = faker.commerce.productName();
     const randomDescription = faker.lorem.sentences();
@@ -39,13 +48,13 @@ const createTable = function () {
     const randomPrice = faker.commerce.price();
     const randomImageURL = randomImage();
     const randomRating = getRandomRating(list);
-    const randomReviewNumber = Math.floor((Math.random() * 1000) + 36);
+    const randomReviewNumber = Math.floor(Math.random() * 1000 + 36);
     const randomBoolean = faker.random.boolean();
 
     const queryString = `INSERT INTO products (productName, productDescription, color, price, imageURL, rating, reviewNumber, isPrime)
                             VALUES ("${randomName}", "${randomDescription}", "${randomColor}", "${randomPrice}", "${randomImageURL}", ${randomRating}, ${randomReviewNumber}, ${randomBoolean})`;
     connection.query(queryString);
-    console.log('entering query');
+    console.log("entering query");
   }
 };
 // preventing the funtion from running more than once
@@ -53,10 +62,12 @@ createTable();
 
 const getRelatedItems = () => {
   for (let i = 1; i <= 100; i += 1) {
-    const relatedItems = ((Math.random() * 38) + 6); // two random numbers to generate number of related items
+    const relatedItems = Math.random() * 38 + 6; // two random numbers to generate number of related items
     for (let j = 0; j < relatedItems; j += 1) {
-      const relatedTo = ((Math.random() * 100) + 1);
-      connection.query(`INSERT INTO similarProducts (productId, relatedItemId) values (${i}, ${relatedTo})`);
+      const relatedTo = Math.random() * 100 + 1;
+      connection.query(
+        `INSERT INTO similarProducts (productId, relatedItemId) values (${i}, ${relatedTo})`
+      );
     }
   }
 };
