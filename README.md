@@ -1,6 +1,6 @@
 # Project Name
 
-> Project description
+> Front End Capstone (Amazon's Related Items Carousel Component)
 
 ## Related Projects
 
